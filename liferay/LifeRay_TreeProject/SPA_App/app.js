@@ -1,3 +1,4 @@
+$( document ).ready(function() {
 
 console.log("javascript connected");
 
@@ -7,20 +8,26 @@ var engine = new Object({
     } );
 
 
-var link = function(routenumber,hyperlink){
+function directto(routenumber, hyperlink){
 
     console.log("button Clicked");
 
-    if(engine.enabled = true){
-        $.ajax({url: routenumber, success: function(result){
-        console.log("ajax success");
-        }});
-    }else{
+    if(engine.enabled = true){ // if the enabled is true, use ajax to go to next link
+        $.ajax({url: routes[routenumber], 
+            method: 'GET',
+            headers: { 'Access-Control-Allow-Origin': '*'}, 
+            success: function(result){ 
+                console.log("ajax success"); // console.log the success
+
+                $('body').text("body replaced with some sort of webpage stuff"); //replace the body of the page
+            
+            }
+        });
+    }else{ //if not go through routing and go to the next page
         window.location = hyperlink;
     }
-
-
-
 };
 
 $("p").text("Jquery loaded");
+
+});
