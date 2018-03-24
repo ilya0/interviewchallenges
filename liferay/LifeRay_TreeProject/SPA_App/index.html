@@ -12,14 +12,37 @@
 
 
     <script rel="text/javascript">
-        console.log("javascriptloaded");
+        console.log("javascript loaded");
+
+        var engine = new Object({
+           routes: ['*.html', '/site/*'],
+           enabled: true, //true means to go through ajax, false is to go through regular page rerouting
+            } );
+
+$(".button").click(function(){
+
+ console.log("button Clicked");
+
+    if(engine.enabled = true){
+        $.ajax({url: "demo_test.txt", success: function(result){
+        $("#div1").html(result);
+        console.log("ajax sucess")
+    }});
+}else{
+    window.location = "http://www.yoururl.com";
+}
+ 
+
+
+});
+
     </script>
 </head>
 
 
 <body>
-    <button>Link1</button>
-    <button>Link2</button>
+    <button class="button">Link1</button>
+    <button class="button">Link2</button>
 
 </body>
 
