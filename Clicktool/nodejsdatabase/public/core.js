@@ -17,7 +17,7 @@ function mainController($scope, $http) {
     $scope.createLander = function() {
         $http.post('/api/landers', $scope.formData)
             .success(function(data) {
-                $scope.formData = {}; // clear the form so our user is ready to enter another
+                // $scope.formData = {}; // clear the form so our user is ready to enter another
                 $scope.landers = data;
                 console.log(data);
             })

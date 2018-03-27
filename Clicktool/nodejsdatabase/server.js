@@ -52,7 +52,7 @@ app.get('/api/landers', function(req, res) {
 // create todo and send back all landers after creation
 app.post('/api/landers', function(req, res) {
 
-    // create a todo, information comes from AJAX request from Angular
+    // create a lander, information comes from AJAX request from Angular
     Lander.create({
         id: req.body.id,
         name: req.body.name,
