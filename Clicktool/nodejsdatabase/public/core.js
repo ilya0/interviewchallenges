@@ -3,10 +3,10 @@ var scotchTodo = angular.module('clicktoolbase', []);
 function mainController($scope, $http) {
     $scope.formData = {};
 
-    // when landing on the page, get all todos and show them
-    $http.get('/api/todos')
+    // when landing on the page, get all landers and show them
+    $http.get('/api/landers')
         .success(function(data) {
-            $scope.todos = data;
+            $scope.landers = data;
             console.log(data);
         })
         .error(function(data) {
@@ -14,11 +14,11 @@ function mainController($scope, $http) {
         });
 
     // when submitting the add form, send the text to the node API
-    $scope.createTodo = function() {
-        $http.post('/api/todos', $scope.formData)
+    $scope.createLander = function() {
+        $http.post('/api/landers', $scope.formData)
             .success(function(data) {
                 $scope.formData = {}; // clear the form so our user is ready to enter another
-                $scope.todos = data;
+                $scope.landers = data;
                 console.log(data);
             })
             .error(function(data) {
@@ -26,11 +26,11 @@ function mainController($scope, $http) {
             });
     };
 
-    // delete a todo after checking it
-    $scope.deleteTodo = function(id) {
-        $http.delete('/api/todos/' + id)
+    // delete a lander after checking it
+    $scope.deleteLander = function(id) {
+        $http.delete('/api/landers/' + id)
             .success(function(data) {
-                $scope.todos = data;
+                $scope.landers = data;
                 console.log(data);
             })
             .error(function(data) {

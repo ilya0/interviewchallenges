@@ -19,7 +19,7 @@ app.use(methodOverride());
 
 
 // define model =================
-var Todo = mongoose.model('Todo', {
+var Lander = mongoose.model('Lander', {
     id: String,
     name: String,
     url: String
@@ -35,56 +35,56 @@ var Todo = mongoose.model('Todo', {
 // routes ======================================================================
 
 // api ---------------------------------------------------------------------
-// get all todos
-app.get('/api/todos', function(req, res) {
+// get all landers
+app.get('/api/landers', function(req, res) {
 
-    // use mongoose to get all todos in the database
-    Todo.find(function(err, todos) {
+    // use mongoose to get all landers in the database
+    Lander.find(function(err, landers) {
 
         // if there is an error retrieving, send the error. nothing after res.send(err) will execute
         if (err)
             res.send(err)
 
-        res.json(todos); // return all todos in JSON format
+        res.json(landers); // return all landers in JSON format
     });
 });
 
-// create todo and send back all todos after creation
-app.post('/api/todos', function(req, res) {
+// create todo and send back all landers after creation
+app.post('/api/landers', function(req, res) {
 
     // create a todo, information comes from AJAX request from Angular
-    Todo.create({
+    Lander.create({
         id: req.body.id,
         name: req.body.name,
         url: req.body.url,
         done: false
-    }, function(err, todo) {
+    }, function(err, lander) {
         if (err)
             res.send(err);
 
-        // get and return all the todos after you create another
-        Todo.find(function(err, todos) {
+        // get and return all the landers after you create another
+        Lander.find(function(err, landers) {
             if (err)
                 res.send(err)
-            res.json(todos);
+            res.json(landers);
         });
     });
 
 });
 
-// delete a todo
-app.delete('/api/todos/:todo_id', function(req, res) {
-    Todo.remove({
-        _id: req.params.todo_id
-    }, function(err, todo) {
+// delete a lander
+app.delete('/api/landers/:lander_id', function(req, res) {
+    Lander.remove({
+        _id: req.params.lander_id
+    }, function(err, lander) {
         if (err)
             res.send(err);
 
-        // get and return all the todos after you create another
-        Todo.find(function(err, todos) {
+        // get and return all the landers after you create another
+        Lander.find(function(err, landers) {
             if (err)
                 res.send(err)
-            res.json(todos);
+            res.json(landers);
         });
     });
 });

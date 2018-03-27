@@ -24,7 +24,7 @@
             padding-top: 50px;
         }
         
-        #todo-list {
+        #lander-list {
             margin-bottom: 30px;
         }
     </style>
@@ -44,17 +44,17 @@
 
         <!-- HEADER AND ENTRY COUNT -->
         <div class="jumbotron text-center">
-            <h1>Clicktool<span class="label label-info">{{ todos.length }}</span></h1>
+            <h1>Clicktool<span class="label label-info">{{ lander.length }}</span></h1>
         </div>
 
         <!-- ENTRY LIST -->
-        <div id="todo-list" class="row">
+        <div id="lander-list" class="row">
             <div class="col-sm-4 col-sm-offset-4">
 
                 <!-- LOOP OVER THE ENTRIES IN $scope.entry -->
-                <div class="checkbox" ng-repeat="todo in todos">
+                <div class="checkbox" ng-repeat="lander in landers">
                     <label>
-                        <input type="checkbox" ng-click="deleteTodo(todo._id)"> {{ todo.id }} - {{ todo.name }} - {{ todo.url }}
+                        <input type="checkbox" ng-click="deleteLander(lander._id)"> {{ lander.id }} - {{ lander.name }} - {{ lander.url }}
                     </label>
                 </div>
 
@@ -74,7 +74,7 @@
                     </div>
 
                     <!-- create new entries-->
-                    <button type="submit" class="btn btn-primary btn-lg" ng-click="createTodo()">Add</button>
+                    <button type="submit" class="btn btn-primary btn-lg" ng-click="createLander()">Add</button>
                 </form>
             </div>
         </div>

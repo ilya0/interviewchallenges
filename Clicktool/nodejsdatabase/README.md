@@ -1,5 +1,2 @@
-# nodetodoappscotchio
-simple todo list app
-
-### Fully functioning web app using angular for the front end and node.js and mongodb on the back end
-### Mongo services provided with mlab. 
+# Anglar 1 and Node.js app 
+This app uses angular 1, bootstrap and node.js for the back end to store, retrieve and show 3 parameters of an element
