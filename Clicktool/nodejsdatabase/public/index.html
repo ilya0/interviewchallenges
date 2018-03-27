@@ -52,7 +52,7 @@
 
             <div class="col-sm-8 col-sm-offset-2">
                 <!-- LOOP OVER THE ENTRIES IN $scope.entry -->
-                <table style="width:100%">
+                <table class="table" style="width:100%">
                     <th> </th>
                     <th>ID </th>
                     <th>Name</th>
@@ -61,7 +61,7 @@
                         <th><button text="Delete" ng-click="deleteLander(lander._id)"> Delete </button> </th>
                         <th>{{ lander.id }}</th>
                         <th>{{ lander.name }}</th>
-                        <th>{{ lander.url }}</th>
+                        <th><a href="{{lander.url}}">{{ lander.url }}</a></th>
                     </tr>
 
                 </table>
@@ -75,13 +75,20 @@
                         <div class="form-group">
 
                             <!-- BIND THIS VALUE TO formData.text IN ANGULAR -->
-                            <input type="text" class="form-control input-lg text-center" placeholder="ID" ng-model="formData.id">
-                            <input type="text" class="form-control input-lg text-center" placeholder="Name" ng-model="formData.name">
-                            <input type="text" class="form-control input-lg text-center" placeholder="URL" ng-model="formData.url">
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control input-lg text-center" placeholder="ID" ng-model="formData.id">
+
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control input-lg text-center" placeholder="Name" ng-model="formData.name">
+                            </div>
+                            <div class="col-sm-4 ">
+                                <input type="text" class="form-control input-lg text-center" placeholder="URL" ng-model="formData.url">
+                            </div>
                         </div>
 
                         <!-- create new entries-->
-                        <button type="submit" class="btn btn-primary btn-lg" ng-click="createLander()">Add</button>
+                        <button type="submit" style="margin-top:10px;" class="btn btn-primary btn-lg" ng-click="createLander()">Add</button>
                     </form>
                 </div>
             </div>
