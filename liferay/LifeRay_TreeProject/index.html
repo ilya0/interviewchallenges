@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<script type="text/javascript">
+    var engine = new Engine({
+        routes: ['*.html', '/site/*'],
+        enabled: true,
+        // if enabled true, spa routes through active reload, if false regular html routing
+    });
+</script>
+
+<body>
+    <div class="mainbody">
+        <button>Spachange</button>
+    </div>
+
+</html>

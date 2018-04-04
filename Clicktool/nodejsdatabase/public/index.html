@@ -1,0 +1,100 @@
+<!-- index.html -->
+<!doctype html>
+
+<!-- ASSIGN OUR ANGULAR MODULE -->
+<html ng-app="clicktoolbase">
+
+<head>
+    <!-- META -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Optimize mobile viewport -->
+
+    <title>Clicktool </title>
+
+    <!-- SCROLLS -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+    <!-- load bootstrap -->
+    <style>
+        html {
+            overflow-y: scroll;
+        }
+        
+        body {
+            padding-top: 50px;
+        }
+        
+        #lander-list {
+            margin-bottom: 30px;
+        }
+    </style>
+
+    <!-- SPELLS -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <!-- load jquery -->
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+    <!-- load angular -->
+    <script src="core.js"></script>
+
+</head>
+<!-- SET THE CONTROLLER AND GET ALL entries -->
+
+<body ng-controller="mainController">
+    <div class="container">
+
+        <!-- HEADER AND ENTRY COUNT -->
+        <div class="jumbotron text-center">
+            <h1>Clicktool<span class="label label-info">{{ landers.length }}</span></h1>
+        </div>
+
+        <!-- ENTRY LIST -->
+        <div id="lander-list" class="row">
+
+            <div class="col-sm-8 col-sm-offset-2">
+                <!-- LOOP OVER THE ENTRIES IN $scope.entry -->
+                <table class="table" style="width:100%">
+                    <th> </th>
+                    <th>ID </th>
+                    <th>Name</th>
+                    <th>URL</th>
+                    <tr ng-repeat="lander in landers">
+                        <th><button text="Delete" ng-click="deleteLander(lander._id)"> Delete </button> </th>
+                        <th>{{ lander.id }}</th>
+                        <th>{{ lander.name }}</th>
+                        <th><a href="{{lander.url}}">{{ lander.url }}</a></th>
+                    </tr>
+
+                </table>
+            </div>
+
+
+            <!-- FORM TO CREATE  -->
+            <div id="todo-form" class="row">
+                <div class="col-sm-8 col-sm-offset-2 text-center">
+                    <form>
+                        <div class="form-group">
+
+                            <!-- BIND THIS VALUE TO formData.text IN ANGULAR -->
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control input-lg text-center" placeholder="ID" ng-model="formData.id">
+
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control input-lg text-center" placeholder="Name" ng-model="formData.name">
+                            </div>
+                            <div class="col-sm-4 ">
+                                <input type="text" class="form-control input-lg text-center" placeholder="URL" ng-model="formData.url">
+                            </div>
+                        </div>
+
+                        <!-- create new entries-->
+                        <button type="submit" style="margin-top:10px;" class="btn btn-primary btn-lg" ng-click="createLander()">Add</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+</body>
+
+</html>

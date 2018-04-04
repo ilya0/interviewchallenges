@@ -1,0 +1,26 @@
+{
+  "name": "nodetodoappscotchio",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ilya0/nodetodoappscotchio.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ilya0/nodetodoappscotchio/issues"
+  },
+  "homepage": "https://github.com/ilya0/nodetodoappscotchio#readme",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "express": "^4.15.4",
+    "method-override": "^2.3.9",
+    "mongoose": "^4.11.6",
+    "morgan": "^1.8.2"
+  }
+}
