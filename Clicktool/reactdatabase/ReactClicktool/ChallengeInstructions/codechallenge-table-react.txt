@@ -1,0 +1,4 @@
+Using node please build a simple app that will store and retrieve this data:
+[{"id":"cf49ba13-7c7c-417a-9859-4458f61c5a49","name":"landing page B","url":"http://landingpageB.com"},{"id":"fd3cd7b5-f5eb-4e00-bf0e-f50545dfa4ec","name":"landing page A","url":"http://landerpageA.com"}]
+
+Using react please display the data as a table on the front end. The image is attached of a sample table (but you can style it as you wish). 
