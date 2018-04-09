@@ -39,15 +39,26 @@ const initialState = [
     ]
 
 
-export default function (state = initialState, action) {
-    switch (action.type) {
-        case 'USER_ADD':
-            return [state, ...action.payload];
-            break;
+    const ACTION_HANDLERS = {   
+        ["USER_ADD"]: (state,{ payload }) => {
+            if (payload.length) {       
+                let _state = state       
+                _state.push(payload)      
+                return _state     
+                } else {       
+                    return state     
+                }   
+        },   
 
-        case 'USER_DELETE':
-            const _state = state;
-            break;
-    }
-    return state;
-}
+        ["USER_DELETE"]: (state, { payload }) => {
+                let _state = state       
+                _state.splice(payload, 1);       
+                return _state   
+            } 
+        }
+
+
+export default function userReducer (state = initialState, action) {  
+    const handler = ACTION_HANDLERS[action.type]   
+    return handler ? handler(state, action) : state
+ }

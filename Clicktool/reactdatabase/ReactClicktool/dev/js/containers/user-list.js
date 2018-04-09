@@ -1,30 +1,34 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {selectUser} from '../actions/index'
+import {addUser, deleteUser} from '../actions/index'
 
 
 class UserList extends Component {
 
     renderList() {
-        return this.props.users.map((user) => {
+         const userRows = this.props.users.map((user,key) => {
             return (
-                <ul key={user.id} onClick={() => this.props.selectUser(user)}>
-                    {user.first} - {user.last}
-                        -    <button type="button">Click Here to Remove Lander</button>
-                </ul>
+                
+                <tr>
+                    <td key={user.id}>
+                        {user.first} - {user.last}
+                            -    <button type="button" onClick={() => this.props.deleteUser(key)}>Click Here to Remove Lander</button>
+                    </td>
+                </tr>
                 
             );
         });
+        return <table>{userRows}</table>
     }
 
 
 
     render() {
         return (
-            <ul>
+            <div>
                 {this.renderList()}
-            </ul>
+            </div>
         );
     }
 

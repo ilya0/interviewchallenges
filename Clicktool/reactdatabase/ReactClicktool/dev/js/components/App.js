@@ -8,6 +8,8 @@ import { Button } from 'react-bootstrap';
 
 
 
+
+
 const App = () => (
     <div>
 
@@ -15,18 +17,6 @@ const App = () => (
         <h2>Lander - CLicktable</h2>
         <UserList />
         <hr />
-
-        <h2>Add new Landers</h2>
-        <user-form />
-        <hr />
-
-    
-
-        <h2>Lander Details</h2>
-        <UserDetails />
-
-
-
     </div>
 );
 
