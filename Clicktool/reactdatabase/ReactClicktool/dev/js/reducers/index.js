@@ -8,6 +8,7 @@ import DeactiveUserReducer from './reducer-deactive-user'; //import the file
  * Your entire applications state (store) is just whatever gets returned from all your reducers
  * */
 
+ // this reducer combines all the other reducer datas
 const allReducers = combineReducers({
     users: UserReducer,
     activeUser: ActiveUserReducer,
