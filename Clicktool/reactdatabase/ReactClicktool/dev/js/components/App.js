@@ -12,8 +12,6 @@ import { Button } from 'react-bootstrap';
 
 const App = () => (
     <div>
-
-
         <h2>Lander - CLicktable</h2>
         <UserList />
         <hr />

@@ -9,6 +9,6 @@ const ListRoute = (store) => ({
 
 // Sync route definition
 export default (store) => ({
-  path: 'items',
+  path: 'users',
   indexRoute: ListRoute(store)
 })

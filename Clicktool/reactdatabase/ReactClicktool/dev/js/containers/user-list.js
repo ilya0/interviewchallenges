@@ -1,19 +1,19 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {addUser, deleteUser} from '../actions/index'
 
 
-class UserList extends Component {
+class UserList extends PureComponent {
 
     renderList() {
          const userRows = this.props.users.map((user,key) => {
             return (
                 
-                <tr>
-                    <td key={user.id}>
+                <tr key={key}>
+                    <td >
                         {user.first} - {user.last}
-                            -    <button type="button" onClick={() => this.props.deleteUser(key)}>Click Here to Remove Lander</button>
+                            -  <button type="button" onClick={() => this.props.deleteUser(key)}>Click Here to Remove Lander</button>
                     </td>
                 </tr>
                 
@@ -43,7 +43,7 @@ function mapStateToProps(state) {
 // Get actions and pass them as props to to UserList
 //      > now UserList has this.props.selectUser
 function matchDispatchToProps(dispatch){
-    return bindActionCreators({selectUser: selectUser}, dispatch);
+    return bindActionCreators({addUser,deleteUser}, dispatch);
 }
 
 // We don't want to return the plain UserList (component) anymore, we want to return the smart Container

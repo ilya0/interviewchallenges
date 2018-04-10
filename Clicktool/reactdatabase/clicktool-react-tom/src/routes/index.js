@@ -1,5 +1,5 @@
 import CoreContainer from '../containers/CoreContainer'
-import ItemsRoute from './Items'
+import UsersRoute from './Users'
 
 export const createRoutes = (store) => ({
   path        : '/',
@@ -7,10 +7,10 @@ export const createRoutes = (store) => ({
     {
       component: CoreContainer,
       indexRoute: {
-        onEnter: (nextState, replace) => replace('/items')
+        onEnter: (nextState, replace) => replace('/users')
       },
       childRoutes: [
-        ItemsRoute(store)
+        UsersRoute(store)
       ]
     },
   ]
