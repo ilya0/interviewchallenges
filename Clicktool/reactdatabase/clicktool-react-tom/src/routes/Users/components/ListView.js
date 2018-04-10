@@ -14,8 +14,8 @@ class ListView extends Component {
 
   state = {
     form: {
-      first: '',
-      last: '',
+      id: '',
+      name: '',
       url: '' 
     }
   }
@@ -38,8 +38,8 @@ class ListView extends Component {
     const rows = users.length ? users.map((user, key) => {
       return (
         <Table.Row key={key} textAlign='center'>
-          <Table.Cell>{user.first}</Table.Cell>
-          <Table.Cell>{user.last}</Table.Cell>
+          <Table.Cell>{user.id}</Table.Cell>
+          <Table.Cell>{user.name}</Table.Cell>
           <Table.Cell>{user.url}</Table.Cell>
 
           <Table.Cell>
@@ -100,8 +100,8 @@ class ListView extends Component {
           </Grid.Row>
 
           <Grid.Row>
-            <Input type='text' name='first' onChange={this.updateFormInput} value={this.state.form.first} placeholder='ID' />
-            <Input type='text' name='last' onChange={this.updateFormInput} value={this.state.form.last} placeholder='Name' />
+            <Input type='text' name='id' onChange={this.updateFormInput} value={this.state.form.first} placeholder='ID' />
+            <Input type='text' name='name' onChange={this.updateFormInput} value={this.state.form.last} placeholder='Name' />
             <Input type='text' name='url' onChange={this.updateFormInput} value={this.state.form.url} placeholder='URL' />
             <Button color='green' content='Add new Lander' onClick={this.newUser} />
           </Grid.Row>
