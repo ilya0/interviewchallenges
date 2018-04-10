@@ -98,10 +98,11 @@ class ListView extends Component {
               {users.length ? this.renderList() : emptyState}
             </Grid.Column>
           </Grid.Row>
+
           <Grid.Row>
             <Input type='text' name='first' onChange={this.updateFormInput} value={this.state.form.first} placeholder='ID' />
             <Input type='text' name='last' onChange={this.updateFormInput} value={this.state.form.last} placeholder='Name' />
-            <Input type='text' name='URL' onChange={this.updateFormInput} value={this.state.form.url} placeholder='URL' />
+            <Input type='text' name='url' onChange={this.updateFormInput} value={this.state.form.url} placeholder='URL' />
             <Button color='green' content='Add new Lander' onClick={this.newUser} />
           </Grid.Row>
         </Grid>
