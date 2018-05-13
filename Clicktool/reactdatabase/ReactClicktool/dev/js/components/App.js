@@ -4,22 +4,17 @@ import UserDetails from '../containers/user-detail';
 //import UserForm from '../containers/user-form';
 //user form is not working
 require('../../scss/style.scss');
+import { Button } from 'react-bootstrap';
+
+
+
+
 
 const App = () => (
     <div>
-
-
-        <h2>This is a clicktable</h2>
+        <h2>Lander - CLicktable</h2>
         <UserList />
         <hr />
-
-    
-
-        <h2>User Details</h2>
-        <UserDetails />
-
-
-
     </div>
 );
 

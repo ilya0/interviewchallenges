@@ -7,11 +7,11 @@
 
 
 // implements action on the payload
-export default function (state = null, action) {
-    switch (action.type) {
-        case 'USER_DEACTIVE':
-            return action.payload;
-            break;
-    }
-    return state;
-}
+// export default function (state = null, action) {
+//     switch (action.type) {
+//         case 'USER_DEACTIVE':
+//             return action.payload;
+//             break;
+//     }
+//     return state;
+// }
