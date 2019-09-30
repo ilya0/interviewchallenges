@@ -59,7 +59,7 @@ function Node(val){
         }
               
     }
-
+ 
 
 /// adding prototype visit to node
 Node.prototype.visit = function(){
