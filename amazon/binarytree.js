@@ -89,11 +89,12 @@ Tree.prototype.traverse = function(){
       
 Tree.prototype.search = function(val){
     if(this.value == val){
-        console.log("found" +val);
+        return this
     }else if (val < this.value && this.left != null){
 
     }else if (val > this.value && this.right != null){
         
     }
+    return null;
 }
 
