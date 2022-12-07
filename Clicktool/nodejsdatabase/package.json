@@ -18,7 +18,7 @@
   "homepage": "https://github.com/ilya0/nodetodoappscotchio#readme",
   "dependencies": {
     "body-parser": "^1.17.2",
-    "express": "^4.15.4",
+    "express": "^4.17.3",
     "method-override": "^2.3.9",
     "mongoose": "^4.11.6",
     "morgan": "^1.8.2"
