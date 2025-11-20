@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tealium Lookup Tool </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Minimal styling for readability -->
+    <style>
+        body { font-family: sans-serif; padding: 50px; max-width: 600px; margin: 0 auto; }
+        input, button { padding: 10px; font-size: 16px; margin-top: 10px; width: 100%; }
+        button { background-color: #007bff; color: white; border: none; cursor: pointer; }
+        button:hover { opacity: 0.9; }
+        #status { margin-top: 20px; font-weight: bold; padding: 10px; border-radius: 4px; }
+        .error { color: red; background: #ffe6e6; }
+        .success { color: green; background: #e6ffe6; }
+    </style>
+</head>
+<body>
+
+    <h2>Employee Title Lookup - Find your favorite person and hire them!</h2>
+    
+    <!-- Simple input for Name -->
+    <label>Team Member Name:</label>
+    <input type="text" id="nameInput" placeholder="e.g. Al Rivera">
+    
+    <!-- On click run the script to find the person -->
+    <button onclick="lookupTitle()">Find Title</button>
+
+    <!-- Status Div will be populated with current status-->
+    <div id="status"></div>
+
+
+    <!-- Js function script -->
+
+    <script>
+        // API Gateway Endpoint connects with AWS API (Production Stage)
+        const API_URL = "https://ev6fu48ss2.execute-api.us-east-2.amazonaws.com/Production/submit";
+
+        // async function so that await can be used inside of it, functuon runs on button click
+        async function lookupTitle() {
+            // get the name in the input box
+            const name = document.getElementById('nameInput').value; 
+            // set the status const to be able to change the colors
+            const statusEl = document.getElementById('status');
+
+            // 1. Client-side validation
+            // if nothing in the name then exit
+            if (!name) return;  
+            //set status
+            statusEl.innerText = "Querying database...";
+            statusEl.className = ""; // Reset styles
+
+            try {  // try catch so that if there are any error or issues they can be show and debugged
+                // 2. Making the POST request
+                // use JSON.stringify to match the Lambda's expected format
+                const res = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }, //making sure that we send json data
+                    body: JSON.stringify({ name: name }) //sending the name in the json, making it a string rather than an object
+                });
+
+                const data = await res.json(); //wait for the response
+                console.log(data) // just checking the data
+                
+                // 3. Handle Response (200 vs 404/500)
+                if (res.ok) {
+                    // Success: Parse enriched data and show the name
+                    statusEl.innerText = `Success: ${data.data.title}`;
+                    statusEl.className = "success";
+                } else {
+                    // Error: Display message from Lambda (e.g., "No Person found")
+                    statusEl.innerText = data.message;
+                    statusEl.className = "error";
+                }
+            } catch (err) {
+                console.error(err);
+                statusEl.innerText = "Network Error: Check API URL or CORS";
+                statusEl.className = "error";
+            }
+        }
+    </script>
+</body>
+</html>
