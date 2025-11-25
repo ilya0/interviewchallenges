@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tealium Executive Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <style>
+        /* --- CORE LAYOUT --- */
+        body { 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            padding: 20px; 
+            background-color: #f1f5f9; 
+            color: #334155;
+            margin: 0;
+        }
+        
+        .container { 
+            max-width: 1200px; 
+            margin: 0 auto;
+            padding-bottom: 40px;
+        }
+
+        /* --- HEADER --- */
+        .header-panel {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        h2 { margin: 0; color: #0f172a; font-size: 1.5rem; display: flex; align-items: center; gap: 12px; }
+        
+        .live-dot {
+            height: 12px; width: 12px; background-color: #22c55e; border-radius: 50%; display: inline-block;
+            box-shadow: 0 0 0 0 rgba(34, 197, 94, 1); animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); } 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); } }
+
+        button { 
+            background-color: #0f172a; color: white; border: none; padding: 10px 20px; 
+            cursor: pointer; border-radius: 8px; font-weight: 600; transition: all 0.2s;
+        }
+        button:hover { background-color: #334155; transform: translateY(-1px); }
+
+        /* --- RESPONSIVE GRID SYSTEM --- */
+        .grid-row { 
+            display: flex; 
+            gap: 20px; 
+            margin-bottom: 20px;
+            flex-wrap: wrap; /* Allow wrapping on small screens */
+        }
+        
+        .col-4 { flex: 1 1 300px; } /* Grow, Shrink, Base Width */
+        .col-8 { flex: 2 1 600px; }
+        .col-12 { flex: 1 1 100%; }
+
+        .card {
+            background: white; border-radius: 12px; padding: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            height: 100%;
+            min-height: 160px; /* Prevent collapse */
+            box-sizing: border-box;
+            position: relative; /* For z-index context */
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- METRICS --- */
+        .metric-title { color: #64748b; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; margin-bottom: 10px; }
+        .metric-val { font-size: 2.5rem; font-weight: 800; color: #0f172a; margin-top: auto; }
+        .metric-sub { font-size: 0.9rem; color: #22c55e; margin-top: 5px; font-weight: 500; }
+
+        /* --- MAP --- */
+        #map { 
+            height: 300px; 
+            border-radius: 8px; 
+            width: 100%; 
+            z-index: 1; /* Ensure map stays in its box */
+            margin-top: 15px;
+        }
+
+        /* --- TABLES --- */
+        .table-container { overflow-x: auto; } /* Scroll table if too wide */
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; min-width: 300px; }
+        th { text-align: left; padding: 12px; color: #64748b; font-size: 0.75rem; text-transform: uppercase; border-bottom: 2px solid #e2e8f0; }
+        td { padding: 12px; border-bottom: 1px solid #f1f5f9; font-size: 0.9rem; vertical-align: middle; }
+        
+        .bar-container { background: #f1f5f9; height: 8px; border-radius: 4px; width: 100%; min-width: 60px; overflow: hidden; }
+        .bar-fill { background: #3b82f6; height: 100%; border-radius: 4px; }
+
+        .tag { padding: 4px 8px; border-radius: 4px; font-size: 0.75em; font-weight: 600; background: #e2e8f0; color: #475569; font-family: monospace; white-space: nowrap; }
+        
+        .back-link { display: inline-block; margin-bottom: 20px; text-decoration: none; color: #64748b; font-weight: 500; }
+        .back-link:hover { color: #0f172a; }
+        
+        /* --- NAME BADGES --- */
+        .name-badge { display: inline-block; padding: 4px 10px; border-radius: 6px; font-weight: 600; color: white; font-size: 0.9em; white-space: nowrap; }
+        .bg-al { background-color: #22c55e; }
+        .bg-sarah { background-color: #3b82f6; }
+        .bg-nedim { background-color: #8b5cf6; }
+        .bg-ilya { background-color: #f97316; }
+        .bg-other { background-color: #64748b; }
+
+        /* --- RESPONSIVE ADJUSTMENTS --- */
+        @media (max-width: 768px) {
+            .grid-row { flex-direction: column; }
+            .col-4, .col-8 { flex: 1 1 100%; }
+            .header-panel { flex-direction: column; align-items: flex-start; }
+            button { width: 100%; margin-top: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="index.html" class="back-link">← Back to Lookup Tool</a>
+
+    <!-- Header -->
+    <div class="header-panel">
+        <div>
+            <h2><span class="live-dot"></span> Live Traffic Monitor</h2>
+            <p style="margin: 4px 0 0 0; color: #64748b; font-size: 0.9em;">Real-time audit stream from AWS S3</p>
+        </div>
+        <button onclick="loadDashboard()">Refresh Data</button>
+    </div>
+
+    <!-- Top Metrics Row -->
+    <div class="grid-row">
+        <div class="col-4">
+            <div class="card">
+                <div class="metric-title">Total Requests</div>
+                <div class="metric-val" id="total-req">-</div>
+                <div class="metric-sub">▲ 12% vs last hour</div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="card">
+                <div class="metric-title">Unique Users</div>
+                <div class="metric-val" id="unique-users">-</div>
+                <div class="metric-sub">Active now</div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="card">
+                <div class="metric-title">Last Event</div>
+                <div class="metric-val" id="last-time" style="font-size: 1.8rem;">-</div>
+                <div class="metric-sub" style="color:#64748b;">System Online</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Middle Row: Map & IP Stats -->
+    <div class="grid-row">
+        <div class="col-8">
+            <div class="card">
+                <div class="metric-title">Global Traffic Source (Simulated)</div>
+                <div id="map"></div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="card">
+                <div class="metric-title">Top IP Addresses</div>
+                <div class="table-container">
+                    <table id="ip-table">
+                        <!-- JS will populate -->
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Row: Search Terms & Logs -->
+    <div class="grid-row">
+        <div class="col-4">
+            <div class="card">
+                <div class="metric-title">Top Search Terms</div>
+                <div class="table-container">
+                    <table id="name-table">
+                        <!-- JS will populate -->
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-8">
+            <div class="card">
+                <div class="metric-title">Recent Audit Log</div>
+                <div class="table-container">
+                    <table id="log-table">
+                        <thead><tr><th>User Searched</th><th>Enriched Title</th><th>IP Address</th><th>Browser</th><th>Time</th></tr></thead>
+                        <tbody id="log-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+    // --- CONFIG ---
+    // REPLACE THIS WITH YOUR ACTUAL API GATEWAY URL
+    const API_URL = "https://ev6fu48ss2.execute-api.us-east-2.amazonaws.com/Production/dashboard";
+
+    // --- MAP SETUP ---
+    const map = L.map('map').setView([37.09, -95.71], 3); 
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+        attribution: '© OpenStreetMap'
+    }).addTo(map);
+
+    // Force map resize on load to prevent grey tiles
+    setTimeout(() => { map.invalidateSize(); }, 500);
+
+    async function loadDashboard() {
+        try {
+            const res = await fetch(API_URL);
+            if (!res.ok) throw new Error("API Error");
+            const data = await res.json();
+
+            processMetrics(data);
+            renderTables(data);
+            plotMap(data); 
+
+        } catch (err) {
+            console.error(err);
+            alert("Failed to load data. Check console.");
+        }
+    }
+
+    function processMetrics(data) {
+        document.getElementById('total-req').innerText = data.length;
+        const uniqueNames = new Set(data.map(d => d.name)).size;
+        document.getElementById('unique-users').innerText = uniqueNames;
+        if (data.length > 0) {
+            const last = new Date(data[0].timestamp * 1000);
+            document.getElementById('last-time').innerText = last.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+        }
+    }
+
+    function getBrowser(ua) {
+        if (!ua) return 'Unknown';
+        if (ua.includes('Chrome')) return 'Chrome';
+        if (ua.includes('Firefox')) return 'Firefox';
+        if (ua.includes('Safari')) return 'Safari';
+        if (ua.includes('Edge')) return 'Edge';
+        return 'Other';
+    }
+
+    function getColorClass(name) {
+        const lowerName = name.toLowerCase();
+        if (lowerName.includes('al')) return 'bg-al';
+        if (lowerName.includes('sarah')) return 'bg-sarah';
+        if (lowerName.includes('nedim')) return 'bg-nedim';
+        if (lowerName.includes('ilya')) return 'bg-ilya';
+        return 'bg-other';
+    }
+
+    function renderTables(data) {
+        const countBy = (keySelector) => {
+            const counts = {};
+            data.forEach(d => {
+                const key = keySelector(d);
+                counts[key] = (counts[key] || 0) + 1;
+            });
+            return Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 5);
+        };
+
+        // Top IPs
+        const topIPs = countBy(d => d.meta ? d.meta.ip_address : 'Unknown');
+        const ipHtml = topIPs.map(([ip, count]) => `
+            <tr>
+                <td><span class="tag">${ip}</span></td>
+                <td style="text-align:right;"><b>${count}</b></td>
+                <td style="width:50px;"><div class="bar-container"><div class="bar-fill" style="width:${(count/data.length)*100}%"></div></div></td>
+            </tr>
+        `).join('');
+        document.getElementById('ip-table').innerHTML = ipHtml;
+
+        // Top Names
+        const topNames = countBy(d => d.name);
+        const nameHtml = topNames.map(([name, count]) => `
+            <tr>
+                <td><b>${name}</b></td>
+                <td style="text-align:right;">${count}</td>
+            </tr>
+        `).join('');
+        document.getElementById('name-table').innerHTML = nameHtml;
+
+        // Logs (Top 10)
+        const logHtml = data.slice(0, 10).map(d => {
+            const browser = d.meta ? getBrowser(d.meta.browser) : 'Unknown';
+            const ip = d.meta ? d.meta.ip_address : 'Unknown';
+            const colorClass = getColorClass(d.name);
+            
+            return `
+            <tr>
+                <td><span class="name-badge ${colorClass}">${d.name}</span></td>
+                <td style="color:#3b82f6;">${d.title}</td>
+                <td><span class="tag">${ip}</span></td>
+                <td><span class="tag">${browser}</span></td>
+                <td style="color:#94a3b8;">${new Date(d.timestamp*1000).toLocaleTimeString()}</td>
+            </tr>
+            `;
+        }).join('');
+        document.getElementById('log-body').innerHTML = logHtml;
+    }
+
+    function plotMap(data) {
+        // Clear markers
+        map.eachLayer((layer) => {
+            if (layer instanceof L.Marker) map.removeLayer(layer);
+        });
+
+        // Mock Locations for Demo
+        const mockLocations = [
+            [40.71, -74.00], [34.05, -118.24], [51.50, -0.12], [48.85, 2.35], [37.77, -122.41]
+        ];
+
+        for(let i=0; i < Math.min(data.length, 5); i++) {
+            L.marker(mockLocations[i % mockLocations.length])
+                .addTo(map)
+                .bindPopup(`<b>Request Source</b><br>IP: ${data[i].meta?.ip_address}`);
+        }
+        
+        // Fix map size issue
+        map.invalidateSize();
+    }
+
+    window.onload = loadDashboard;
+
+</script>
+
+</body>
+</html>

@@ -49,7 +49,8 @@
             statusEl.innerText = "Querying database...";
             statusEl.className = ""; // Reset styles
 
-            try {  // try catch so that if there are any error or issues they can be show and debugged
+            try {  // try catch so that if there are any error or issues they can be shown and debugged
+                
                 // 2. Making the POST request
                 // use JSON.stringify to match the Lambda's expected format
                 const res = await fetch(API_URL, {
@@ -60,7 +61,7 @@
 
                 const data = await res.json(); //wait for the response
                 console.log(data) // just checking the data
-                
+
                 // 3. Handle Response (200 vs 404/500)
                 if (res.ok) {
                     // Success: Parse enriched data and show the name

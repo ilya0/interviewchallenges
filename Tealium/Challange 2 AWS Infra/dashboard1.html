@@ -1,0 +1,50 @@
+<!-- DASHBOARD SECTION START -->
+<hr style="margin: 30px 0; border: 0; border-top: 2px solid #ddd;">
+
+<div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin-top: 20px;">
+    <h3 style="margin-top: 0;">Admin Audit Log (S3 Data)</h3>
+    <button onclick="loadDashboard()" style="background-color: #333; color: white; margin-bottom: 15px;">Load Recent Logs</button>
+    <div id="dashboard-container"></div>
+</div>
+
+<script>
+    async function loadDashboard() {
+        // REPLACE THIS URL with your specific GET API Gateway URL
+        const DASHBOARD_URL = "https://ev6fu48ss2.execute-api.us-east-2.amazonaws.com/Production/dashboard";
+                         
+        const container = document.getElementById('dashboard-container');
+        container.innerHTML = "Fetching data from S3...";
+
+        try {
+            const res = await fetch(DASHBOARD_URL);
+            
+            if (!res.ok) throw new Error("Failed to fetch");
+
+            const data = await res.json();
+            
+            // Generate Table
+            let html = '<table border="1" style="width:100%; border-collapse: collapse; font-size: 14px;">';
+            html += '<tr style="background:#ddd;"><th>Name</th><th>Title</th><th>IP</th><th>Browser</th></tr>';
+            
+            data.forEach(entry => {
+                // Handle missing metadata gracefully
+                const ip = entry.meta ? entry.meta.ip_address : 'N/A';
+                const browser = entry.meta ? entry.meta.browser.substring(0, 15) + '...' : 'N/A';
+                
+                html += `<tr>
+                    <td style="padding:5px;">${entry.name}</td>
+                    <td style="padding:5px;">${entry.title}</td>
+                    <td style="padding:5px;">${ip}</td>
+                    <td style="padding:5px;">${browser}</td>
+                </tr>`;
+            });
+            html += '</table>';
+            container.innerHTML = html;
+            
+        } catch (err) {
+            container.innerHTML = `<span style="color:red">Error: Ensure your API Gateway has a GET method deployed!</span><br><small>${err}</small>`;
+            console.error(err);
+        }
+    }
+</script>
+<!-- DASHBOARD SECTION END -->
